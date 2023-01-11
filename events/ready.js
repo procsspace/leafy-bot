@@ -18,6 +18,8 @@ module.exports = {
       client.user.setActivity(`https://procs.space`, {
         type: "WATCHING",
       });
+    
+    client.user.setStatus("dnd");
 
 
     // Connect to the database
