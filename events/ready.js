@@ -36,7 +36,7 @@ module.exports = {
 
     // Ping https://procsBot.stelladev.repl.co every 4 minutes to keep the bot alive
     setInterval(() => {
-      axios.get("https://procsBot.stelladev.repl.co");
+      axios.get(process.env.URL);
     }
     , 240000);
 
