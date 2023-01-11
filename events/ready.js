@@ -36,11 +36,34 @@ module.exports = {
       logger.info("Connected to the database!");
     });
 
-    // Ping https://procsBot.stelladev.repl.co every 4 minutes to keep the bot alive
-    setInterval(() => {
-      axios.get(process.env.URL);
-    }
-    , 240000);
+ axios.get("https://procs.space/api/changelog").then((res) => {
+      
+
+    let version = res.data[0].name;
+    let addedChanges = res.data[0].added;
+    let removedChanges = res.data[0].removed;
+    let date = res.data[0]._date;
+
+    const embed = new MessageEmbed()
+      .setTitle(`New Update!`)
+      .setDescription(`Version: ${version}\n\nAdded:\n${addedChanges}\n\nRemoved:\n${removedChanges}`)
+      .setFooter(`Date: ${date}`)
+    
+
+      client.channels.cache.get(process.env.changelog).messages.fetch({ limit: 1 }).then((messages) => {
+        const lastMessage = messages.first();
+       
+        if (lastMessage.content !== version + " <@&1062577215289696286>") {
+          client.channels.cache.get(process.env.changelog).send({ embeds: [embed], content: `${version} <@&1062577215289696286>` });
+        }
+        else {
+          logger.warn("No new updates!");
+        }
+      })
+
+    }).catch((err) => {
+      console.log(err);
+    });
 
    
 
