@@ -36,6 +36,7 @@ module.exports = {
       logger.info("Connected to the database!");
     });
 
+    setInterval(async () => {
  axios.get("https://procs.space/api/changelog").then((res) => {
       
 
@@ -64,6 +65,7 @@ module.exports = {
     }).catch((err) => {
       console.log(err);
     });
+      }, 300000);
 
    
 
