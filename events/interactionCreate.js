@@ -34,6 +34,8 @@ module.exports = {
                 interaction.reply({ embeds: [errorEmbed], ephemeral: true });
                 return;
             }
+		
+		command.execute(interaction);
         } catch (error) {
             logger.error(error);
             const errorEmbed = new MessageEmbed()
