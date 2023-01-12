@@ -24,7 +24,7 @@ module.exports = {
                 return;
             }
         
-            if (command.isStaffOnly && !interaction.member.roles.cache.has("996941131591974982")) {
+            if (command.isStaffOnly && !interaction.member.roles.cache.has("1062576768940249088")) {
                 logger.warn(`Command ${interaction.commandName} is staff only!`);
                 const errorEmbed = new MessageEmbed()
                     .setTitle(`Command Error - ${interaction.commandName}`)
