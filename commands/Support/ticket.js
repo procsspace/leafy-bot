@@ -120,6 +120,11 @@ module.exports = {
                            i.channel.send({ content: `Ticket closed by ${interaction.user.tag}`, components: [] }).then(async () => {
                                 setTimeout(async () => {
                                     await ticketChannel.delete();
+                                    ticketSchema.findByIdAndDelete(ticket._id, (err) => {
+                                        if (err) console.log(err);
+
+                                        console.log(`Deleted ticket ${ticket._id}`);
+                                    })
                                 }, 5000);
                            })
                         }
