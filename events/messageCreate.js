@@ -1,33 +1,41 @@
 const Logger = require('../utils/Logger');
 const logger = new Logger({ debug: true });
 const { MessageEmbed } = require("discord.js");
+const ticketSchema = require("../models/ticket");
 
 
 module.exports = {
 	name: 'messageCreate',
 	execute(message) {
-        // Use regex to check if the message contained the client's id
-        if (/<@!?(\d+)>/.test(message.content)) {
-            // If it did, get the client's id
-            const id = message.client.user.id;
-            // If the message contained the client's id, check if the id was in the message
-            if (message.content.includes(id)) {
-                // If the id was in the message, send a message to the channel
-                const embed = new MessageEmbed()
-                .setTitle(`Message Prefix Error`)
-                .setDescription(`My prefix is \`/\`!`)
-                .setColor("RED")
-                .setTimestamp();
-    
-                return message.reply({ embeds: [embed] }).then(msg => {
-                    setTimeout(() => {
-                        msg.delete();
-                        setTimeout(() => {
-                            message.delete();
-                        }, 2000)
-                    }, 5000);
+       
+        const ticketChannel = message.guild.channels.cache.find(channel => channel.name === `ticket-${message.author.username}`);
+
+        console.log(message)
+        if (ticketChannel) {
+            ticketSchema.findOne({ "author.id": message.author.id }, async (err, ticket) => {
+                if (err) logger.error(err);
+                if (!ticket) return;
+
+                ticket.messages.push({
+                    id: message.id,
+                    content: message.content,
+                    author: {
+                        id: message.author.id,
+                        username: message.author.username,
+                        discriminator: message.author.discriminator,
+                        avatar: message.author.avatarURL({ dynamic: true }),
+                    },
+                    timestamp: message.createdAt,
+                    embeds: message.embeds,
+                    attachments: message.attachments,
+
                 })
-            }
+
+                await ticket.save().then(() => {
+                    logger.debug(`Saved message ${message.id} to ticket ${ticket._id}`);
+                })
+            })
         }
+        
 	},
 };
