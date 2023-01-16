@@ -54,7 +54,7 @@ module.exports = {
             await newTicket.save().then(async (ticket) => {
                 const ticketChannel = await guild.channels.create(`ticket-${interaction.user.username}`, {
                     type: "GUILD_TEXT",
-                    parent: "1064642691767468124",
+                    parent: "1064667325707591741",
                     topic: `Ticket ID: ${ticket._id}`,
                     permissionOverwrites: [
                         {
