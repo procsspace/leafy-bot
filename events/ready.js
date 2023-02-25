@@ -15,7 +15,7 @@ module.exports = {
    
 
 
-      client.user.setActivity(`https://procs.space`, {
+      client.user.setActivity(`https://unfatal.xyz`, {
         type: "WATCHING",
       });
     
